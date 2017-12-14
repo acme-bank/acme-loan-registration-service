@@ -1,6 +1,6 @@
 # ACME Bank
 
-## Loan Registration Service
+## ACME Loan Registration Service
 
 This repo contains the microservice for loan registration.
 
