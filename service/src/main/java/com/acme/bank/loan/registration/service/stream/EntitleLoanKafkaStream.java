@@ -1,12 +1,9 @@
 package com.acme.bank.loan.registration.service.stream;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-
-import java.util.Properties;
-
-import org.apache.kafka.common.serialization.Serdes;
-import org.apache.kafka.streams.Consumed;
+import com.acme.bank.loan.registration.domain.config.AcmeProperties;
+import com.acme.bank.loan.registration.domain.event.EntitleLoanEvent;
+import com.acme.bank.loan.registration.service.helper.KafkaHelper;
+import com.acme.bank.loan.registration.service.service.RegisterLoanService;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.slf4j.Logger;
@@ -15,10 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.acme.bank.loan.registration.domain.config.AcmeProperties;
-import com.acme.bank.loan.registration.domain.event.EntitleLoanEvent;
-import com.acme.bank.loan.registration.service.helper.KafkaHelper;
-import com.acme.bank.loan.registration.service.service.RegisterLoanService;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import java.util.Properties;
 
 @SuppressWarnings({"Duplicates", "unchecked", "unused"})
 @Component
@@ -48,7 +44,7 @@ public class EntitleLoanKafkaStream {
         AcmeProperties.Kafka.Topics topics = acmeProperties.getKafka().getTopics();
 
         StreamsBuilder streamBuilder = new StreamsBuilder();
-        streamBuilder.stream(topics.getRejectLoan(), cosumedWith())
+        streamBuilder.stream(topics.getRejectLoan(), kafkaHelper.consumedWith(EntitleLoanEvent.class))
                 .foreach(this::save);
 
         streams = new KafkaStreams(streamBuilder.build(), properties());
@@ -63,10 +59,6 @@ public class EntitleLoanKafkaStream {
         LOGGER.info("Saving event with key {} to database", key);
 
         service.save(event);
-    }
-
-    private Consumed<String, EntitleLoanEvent> cosumedWith() {
-        return Consumed.with(Serdes.String(), kafkaHelper.jsonSerde(EntitleLoanEvent.class));
     }
 
     private Properties properties() {

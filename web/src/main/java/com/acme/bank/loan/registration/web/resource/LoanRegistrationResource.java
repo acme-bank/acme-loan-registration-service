@@ -1,15 +1,13 @@
 package com.acme.bank.loan.registration.web.resource;
 
+import com.acme.bank.loan.registration.domain.model.RegisterLoanModel;
+import com.acme.bank.loan.registration.service.service.RegisterLoanService;
+import com.acme.bank.loan.registration.web.helper.WebHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-
-import java.net.URI;
-import java.util.List;
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,11 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.acme.bank.loan.registration.domain.model.RegisterLoanModel;
-import com.acme.bank.loan.registration.service.service.RegisterLoanService;
-import com.acme.bank.loan.registration.web.helper.WebHelper;
+import java.net.URI;
+import java.util.List;
+import java.util.UUID;
 
-@Api(value = "Register ClaimEvent API", tags = {"loan", "register"})
+@Api(value = "Register Loan API", tags = {"loans", "register"})
 @RequestMapping(path = "${acme.loan.registration.api.url:/api/1.0/loans}")
 @RestController
 public class LoanRegistrationResource {
@@ -37,13 +35,13 @@ public class LoanRegistrationResource {
         this.service = service;
     }
 
-    @ApiOperation(value = "Find registered claims by personal ID", httpMethod = "GET", response = RegisterLoanModel.class, responseContainer = "List")
+    @ApiOperation(value = "Find registered loans by personal ID", httpMethod = "GET", response = RegisterLoanModel.class, responseContainer = "List")
     @GetMapping(params = "personalId")
     public ResponseEntity<List<RegisterLoanModel>> find(@RequestParam("personalId") String personalId) {
         return ResponseEntity.ok(service.find(personalId));
     }
 
-    @ApiOperation(value = "Find all registered claims", httpMethod = "GET", response = RegisterLoanModel.class, responseContainer = "List")
+    @ApiOperation(value = "Find all registered loans", httpMethod = "GET", response = RegisterLoanModel.class, responseContainer = "List")
     @GetMapping
     public ResponseEntity<List<RegisterLoanModel>> find() {
         return ResponseEntity.ok(service.find());

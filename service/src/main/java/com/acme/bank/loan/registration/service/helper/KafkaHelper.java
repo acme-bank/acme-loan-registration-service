@@ -1,21 +1,23 @@
 package com.acme.bank.loan.registration.service.helper;
 
-import java.util.Properties;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.serialization.Serializer;
+import org.apache.kafka.streams.Consumed;
 import org.apache.kafka.streams.StreamsConfig;
+import org.apache.kafka.streams.kstream.Produced;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Properties;
 
+@SuppressWarnings({"unused", "WeakerAccess", "Duplicates"})
 @Component
 public class KafkaHelper {
 
@@ -40,5 +42,13 @@ public class KafkaHelper {
         config.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, String.join(",", kafkaProperties.getBootstrapServers()));
         config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, kafkaProperties.getConsumer().getAutoOffsetReset());
         return config;
+    }
+
+    public <T> Consumed<String, T> consumedWith(Class<T> clazz) {
+        return Consumed.with(Serdes.String(), jsonSerde(clazz));
+    }
+
+    public <T> Produced<String, T> producedWith(Class<T> clazz) {
+        return Produced.with(Serdes.String(), jsonSerde(clazz));
     }
 }
