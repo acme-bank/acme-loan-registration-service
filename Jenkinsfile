@@ -1,30 +1,37 @@
 node {
     
-    stage ('Checkout the code') {
+    stage ('Checkout Code') {
+        echo 'Checkout code...'
         checkout scm
     }
 
-    stage('Environmnet setup') {
+    stage('Environment Setup') {
         env.FORMATTED_BRANCH_NAME = env.BRANCH_NAME.replaceAll("[^A-Za-z0-9-]", "_").toLowerCase()
+        env.APPLICATION_NAME = acme-loan-registration
         sh 'env | sort'
     }
     
-    stage('Build') {
-        echo 'Building..'
+    stage('Build Code') {
+        echo 'Building code...'
         sh 'mvn clean verify'
     }
     
-    stage('Test') {
-        echo 'Testing..'
+    stage('Test Code') {
+        echo 'Testing code...'
     }
-    
-    stage('Docker build') {
-        echo 'Building docker image'
+
+    stage('Deploy Artifact') {
+        echo 'Deploying artifact...'
+        sh 'mvn deploy'
+    }
+
+    stage('Docker Build') {
+        echo 'Building Docker image...'
         sh 'docker-compose -f docker-compose.ci.yml build'
     }
 
-    stage('Docker push') {
-        echo 'Pushing docker image'
+    stage('Docker Push') {
+        echo 'Pushing Docker image...'
         sh 'docker-compose -f docker-compose.ci.yml push'
     }
 }
