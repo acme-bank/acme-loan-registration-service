@@ -1,5 +1,9 @@
 node {
-    
+
+    environment {
+        APPLICATION_NAME = "acme-loan-registration"
+    }
+
     stage ('Checkout Code') {
         echo 'Checkout code...'
         checkout scm
@@ -7,7 +11,6 @@ node {
 
     stage('Environment Setup') {
         env.FORMATTED_BRANCH_NAME = env.BRANCH_NAME.replaceAll("[^A-Za-z0-9-]", "_").toLowerCase()
-        env.APPLICATION_NAME = acme-loan-registration
         sh 'env | sort'
     }
     
