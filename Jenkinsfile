@@ -25,7 +25,7 @@ node {
 
     stage('Deploy Artifact') {
         echo 'Deploying artifact...'
-        sh 'mvn deploy -Pacme-nexus'
+        sh 'mvn deploy'
     }
 
     stage('Docker Build') {

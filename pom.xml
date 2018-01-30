@@ -124,19 +124,14 @@
     </dependencyManagement>
 
     <!-- REPOSITORIES -->
-    <repositories>
+    <distributionManagement>
         <repository>
-            <id>repository.spring.milestone</id>
-            <name>Spring Milestone Repository</name>
-            <url>http://repo.spring.io/milestone</url>
+            <id>acme-nexus-releases</id>
+            <url>http://nexus.acme.com/repository/maven-releases/</url>
         </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>repository.spring.milestone</id>
-            <name>Spring Milestone Repository</name>
-            <url>http://repo.spring.io/milestone</url>
-        </pluginRepository>
-    </pluginRepositories>
+        <snapshotRepository>
+            <id>acme-nexus-snapshots</id>
+            <url>http://nexus.acme.com/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
