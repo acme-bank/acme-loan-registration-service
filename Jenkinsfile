@@ -1,63 +1,57 @@
-pipeline {
+node {
 
-    agent any
+    stage('Environmnet setup') {
+        echo 'Setup environmnet...'
 
-    environment {
-        APPLICATION_NAME = "acme-loan-registration"
-        FORMATTED_BRANCH_NAME = BRANCH_NAME.replaceAll("[^A-Za-z0-9-]", "_").toLowerCase()
-        DOCKER_SNAPSHOT_TAG = "docker.acme.com/${APPLICATION_NAME}:snapshot"
-        DOCKER_VERSIONED_TAG = "docker.acme.com/${APPLICATION_NAME}:${FORMATTED_BRANCH_NAME}-${BUILD_NUMBER}"
+        env.APPLICATION_NAME = env.JOB_NAME.replaceAll("/.*", "")
+        env.FORMATTED_BRANCH_NAME = env.BRANCH_NAME.replaceAll("[^A-Za-z0-9-]", "_").toLowerCase()
+
+        if (env.BRANCH_NAME == 'master') {
+            env.DOCKER_PREFIX = 'docker.acme.com/release/'
+            env.DOCKER_SUFFIX = 'release'
+        } else {
+            env.DOCKER_PREFIX = 'docker.acme.com/snapshot/'
+            env.DOCKER_SUFFIX = 'snapshot'
+        }
+
+        env.DOCKER_TAG = "${DOCKER_PREFIX}${APPLICATION_NAME}:${DOCKER_SUFFIX}"
+        env.DOCKER_BRANCH_TAG = "${DOCKER_PREFIX}${APPLICATION_NAME}:${FORMATTED_BRANCH_NAME}-${BUILD_NUMBER}"
+
+        sh 'env | sort'
     }
 
-    stages {
+    stage ('Checkout the code') {
+        echo 'Checkout code...'
 
-        stage ('Checkout Code') {
-            steps {
-                echo 'Checkout code...'
-                checkout scm
-            }
-        }
+        checkout scm
+    }
 
-        stage('Environment Setup') {
-            steps {
-                sh 'env | sort'
-            }
-        }
+    stage('Build') {
+        echo 'Building code...'
 
-        stage('Build Code') {
-            steps {
-                echo 'Building code...'
-                sh 'mvn clean verify'
-            }
-        }
+        sh 'mvn clean verify'
+    }
 
-        stage('Test Code') {
-            steps {
-                echo 'Testing code...'
-            }
-        }
+    stage('Test') {
+        echo 'Testing code...'
+    }
 
-        stage('Deploy Artifact') {
-            steps {
-                echo 'Deploying artifact...'
-                sh 'mvn deploy'
-            }
-        }
+    stage('Deploy Maven Artifact') {
+        echo 'Deploying artifact...'
 
-        stage('Docker Build') {
-            steps {
-                echo 'Building Docker image...'
-                sh 'docker build --tag ${DOCKER_SNAPSHOT_TAG} --tag ${DOCKER_VERSIONED_TAG} --build-arg APPLICATION_NAME=${APPLICATION_NAME} .'
-            }
-        }
+        sh 'mvn deploy'
+    }
 
-        stage('Docker Push') {
-            steps {
-                echo 'Pushing Docker image...'
-                sh 'docker push ${DOCKER_SNAPSHOT_TAG}'
-                sh 'docker push ${DOCKER_VERSIONED_TAG}'
-            }
-        }
+    stage('Docker build') {
+        echo 'Building Docker image...'
 
+        sh 'docker build --tag ${DOCKER_TAG} --tag ${DOCKER_BRANCH_TAG} --build-arg APPLICATION_NAME=${APPLICATION_NAME} .'
+    }
+
+    stage('Docker push') {
+        echo 'Pushing Docker image...'
+
+        sh 'docker push ${DOCKER_TAG}'
+        sh 'docker push ${DOCKER_BRANCH_TAG}'
     }
 }
