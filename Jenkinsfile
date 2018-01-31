@@ -4,6 +4,7 @@ pipeline {
 
     environment {
         APPLICATION_NAME = 'acme-loan-registration'
+        FORMATTED_BRANCH_NAME = BRANCH_NAME.replaceAll("[^A-Za-z0-9-]", "_").toLowerCase()
     }
 
     stages {
@@ -17,7 +18,6 @@ pipeline {
 
         stage('Environment Setup') {
             steps {
-                env.FORMATTED_BRANCH_NAME = env.BRANCH_NAME.replaceAll("[^A-Za-z0-9-]", "_").toLowerCase()
                 sh 'env | sort'
             }
         }
