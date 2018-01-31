@@ -1,40 +1,58 @@
-node {
+pipeline {
 
     environment {
-        APPLICATION_NAME = "acme-loan-registration"
+        APPLICATION_NAME = 'acme-loan-registration'
     }
 
-    stage ('Checkout Code') {
-        echo 'Checkout code...'
-        checkout scm
-    }
+    stages {
 
-    stage('Environment Setup') {
-        env.FORMATTED_BRANCH_NAME = env.BRANCH_NAME.replaceAll("[^A-Za-z0-9-]", "_").toLowerCase()
-        sh 'env | sort'
-    }
-    
-    stage('Build Code') {
-        echo 'Building code...'
-        sh 'mvn clean verify'
-    }
-    
-    stage('Test Code') {
-        echo 'Testing code...'
-    }
+        stage ('Checkout Code') {
+            steps {
+                echo 'Checkout code...'
+                checkout scm
+            }
+        }
 
-    stage('Deploy Artifact') {
-        echo 'Deploying artifact...'
-        sh 'mvn deploy'
-    }
+        stage('Environment Setup') {
+            steps {
+                env.FORMATTED_BRANCH_NAME = env.BRANCH_NAME.replaceAll("[^A-Za-z0-9-]", "_").toLowerCase()
+                sh 'env | sort'
+            }
+        }
 
-    stage('Docker Build') {
-        echo 'Building Docker image...'
-        sh 'docker-compose -f docker-compose.ci.yml build'
-    }
+        stage('Build Code') {
+            steps {
+                echo 'Building code...'
+                sh 'mvn clean verify'
+            }
+        }
 
-    stage('Docker Push') {
-        echo 'Pushing Docker image...'
-        sh 'docker-compose -f docker-compose.ci.yml push'
+        stage('Test Code') {
+            steps {
+                echo 'Testing code...'
+            }
+        }
+
+        stage('Deploy Artifact') {
+            steps {
+                echo 'Deploying artifact...'
+                sh 'mvn deploy'
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                echo 'Building Docker image...'
+                sh 'docker build -t docker.acme.com/${APPLICATION_NAME}:${FORMATTED_BRANCH_NAME}-${BUILD_NUMBER}'
+            }
+        }
+
+        stage('Docker Push') {
+            steps {
+                echo 'Pushing Docker image...'
+                sh 'docker push docker.acme.com/${APPLICATION_NAME}:${FORMATTED_BRANCH_NAME}-${BUILD_NUMBER}'
+            }
+        }
+
     }
 }
