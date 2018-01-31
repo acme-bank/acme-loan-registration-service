@@ -1,5 +1,7 @@
 pipeline {
 
+    agent any
+
     environment {
         APPLICATION_NAME = 'acme-loan-registration'
     }
