@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.0.M7</version>
+        <version>2.0.0.RC2</version>
     </parent>
 
     <groupId>com.acme.bank</groupId>
@@ -21,7 +21,7 @@
     <!-- PROPERTIES -->
     <properties>
         <!-- Common -->
-        <java.version>1.8</java.version>
+        <java.version>1.9</java.version>
         <project.encoding>UTF-8</project.encoding>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
@@ -38,7 +38,6 @@
         <build.revision>${build.unknown}</build.revision>
 
         <!-- Dependencies -->
-        <spring-cloud.version>Finchley.M4</spring-cloud.version>
         <kafka.version>1.0.0</kafka.version>
         <swagger.version>1.5.17</swagger.version>
         <commons-lang3.version>3.6</commons-lang3.version>
@@ -65,15 +64,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- Spring Framework -->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
             <!-- Jackson -->
             <dependency>
                 <groupId>com.fasterxml.jackson</groupId>
@@ -134,4 +124,42 @@
             <url>http://nexus.acme.com/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 </project>

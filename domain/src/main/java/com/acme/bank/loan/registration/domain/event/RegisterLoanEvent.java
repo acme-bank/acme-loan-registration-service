@@ -7,8 +7,8 @@ public class RegisterLoanEvent {
 
     private UUID uuid;
     private String personalId;
-    private ZonedDateTime registeredTimestamp;
     private double amount;
+    private ZonedDateTime registeredTimestamp;
 
     public UUID getUuid() {
         return uuid;
@@ -26,19 +26,19 @@ public class RegisterLoanEvent {
         this.personalId = personalId;
     }
 
-    public ZonedDateTime getRegisteredTimestamp() {
-        return registeredTimestamp;
-    }
-
-    public void setRegisteredTimestamp(ZonedDateTime registeredTimestamp) {
-        this.registeredTimestamp = registeredTimestamp;
-    }
-
     public double getAmount() {
         return amount;
     }
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    public ZonedDateTime getRegisteredTimestamp() {
+        return registeredTimestamp;
+    }
+
+    public void setRegisteredTimestamp(ZonedDateTime registeredTimestamp) {
+        this.registeredTimestamp = registeredTimestamp;
     }
 }

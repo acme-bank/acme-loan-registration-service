@@ -1,0 +1,12 @@
+########################
+# ACME Config          #
+########################
+
+########################
+# SPRING Config        #
+########################
+# Spring
+spring:
+  # Kafka
+  kafka:
+    bootstrap-servers: kafka01.acme.com:9092

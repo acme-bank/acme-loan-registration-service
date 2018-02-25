@@ -1,11 +1,6 @@
 package com.acme.bank.loan.registration.domain.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
+import javax.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
@@ -18,10 +13,10 @@ public class RegisterLoanEntity {
     private Long id;
     private UUID uuid;
     private String personalId;
+    private double amount;
     private ZonedDateTime registeredTimestamp;
     private ZonedDateTime entitledTimestamp;
     private ZonedDateTime rejectedTimestamp;
-    private double amount;
 
     public Long getId() {
         return id;
@@ -51,6 +46,14 @@ public class RegisterLoanEntity {
         return registeredTimestamp;
     }
 
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
     public void setRegisteredTimestamp(ZonedDateTime registeredTimestamp) {
         this.registeredTimestamp = registeredTimestamp;
     }
@@ -69,13 +72,5 @@ public class RegisterLoanEntity {
 
     public void setRejectedTimestamp(ZonedDateTime rejectedTimestamp) {
         this.rejectedTimestamp = rejectedTimestamp;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
     }
 }

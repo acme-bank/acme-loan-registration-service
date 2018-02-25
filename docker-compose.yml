@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  acme_loan_registration:
+    image: docker.acme.com/acme-loan-registration
+    container_name: acme_loan_registration_01
+    hostname: loan-registration
+    domainname: acme.com
+    ports:
+      - 8001:8080
+    networks:
+      acme:
+
+networks:
+  acme:
+    external:
+      name: acme
