@@ -103,6 +103,7 @@
         </plugins>
     </build>
 
+    <!-- PROFILES -->
     <profiles>
         <profile>
             <id>generate-swagger</id>

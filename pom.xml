@@ -21,7 +21,7 @@
     <!-- PROPERTIES -->
     <properties>
         <!-- Common -->
-        <java.version>1.9</java.version>
+        <java.version>1.8</java.version>
         <project.encoding>UTF-8</project.encoding>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>

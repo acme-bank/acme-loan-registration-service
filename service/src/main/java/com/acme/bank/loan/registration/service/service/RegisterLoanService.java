@@ -72,7 +72,7 @@ public class RegisterLoanService {
         registerLoanRepository.save(entity);
         registerLoanKafkaProducer.send(event);
 
-        return model.getUuid();
+        return event.getUuid();
     }
 
     @Transactional
