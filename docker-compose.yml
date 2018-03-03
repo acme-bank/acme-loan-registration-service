@@ -2,7 +2,11 @@ version: "3"
 
 services:
   acme_loan_registration:
-    image: docker.acme.com/acme-loan-registration
+    build:
+      context: .
+      args:
+        APPLICATION_NAME: acme-loan-registration
+    image: docker.acme.com/acme-loan-registration:latest
     container_name: acme_loan_registration_01
     hostname: loan-registration
     domainname: acme.com

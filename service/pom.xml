@@ -68,7 +68,7 @@
             <artifactId>flyway-core</artifactId>
         </dependency>
 
-        <!-- Kafka -->
+        <!-- Apache Kafka -->
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-clients</artifactId>

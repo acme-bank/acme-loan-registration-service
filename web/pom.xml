@@ -100,52 +100,41 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>com.github.kongchen</groupId>
+                <artifactId>swagger-maven-plugin</artifactId>
+                <version>${swagger-maven-plugin.version}</version>
+                <configuration>
+                    <apiSources>
+                        <apiSource>
+                            <springmvc>true</springmvc>
+                            <locations>
+                                <location>com.acme.bank.loan.web.resource</location>
+                            </locations>
+                            <schemes>
+                                <scheme>http</scheme>
+                            </schemes>
+                            <host>hostname:port</host>
+                            <basePath>/</basePath>
+                            <info>
+                                <title>${project.parent.name}</title>
+                                <version>v${project.version}</version>
+                            </info>
+                            <swaggerDirectory>
+                                ${project.build.directory}/${project.build.finalName}/WEB-INF/classes/static
+                            </swaggerDirectory>
+                        </apiSource>
+                    </apiSources>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
-
-    <!-- PROFILES -->
-    <profiles>
-        <profile>
-            <id>generate-swagger</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.github.kongchen</groupId>
-                        <artifactId>swagger-maven-plugin</artifactId>
-                        <version>${swagger-maven-plugin.version}</version>
-                        <configuration>
-                            <apiSources>
-                                <apiSource>
-                                    <springmvc>true</springmvc>
-                                    <locations>
-                                        <location>com.acme.bank.loan.registration.web.resource</location>
-                                    </locations>
-                                    <schemes>
-                                        <scheme>http</scheme>
-                                    </schemes>
-                                    <host>hostname:port</host>
-                                    <basePath>/</basePath>
-                                    <info>
-                                        <title>${project.parent.name}</title>
-                                        <version>v${project.version}</version>
-                                    </info>
-                                    <swaggerDirectory>
-                                        ${project.build.directory}/${project.build.finalName}/WEB-INF/classes/static
-                                    </swaggerDirectory>
-                                </apiSource>
-                            </apiSources>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <phase>compile</phase>
-                                <goals>
-                                    <goal>generate</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>
