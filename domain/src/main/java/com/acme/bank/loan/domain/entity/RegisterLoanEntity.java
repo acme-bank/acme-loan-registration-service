@@ -11,8 +11,8 @@ public class RegisterLoanEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private UUID uuid;
-    private String personalId;
+    private UUID eventId;
+    private UUID personId;
     private double amount;
     private ZonedDateTime registeredTimestamp;
     private ZonedDateTime entitledTimestamp;
@@ -22,28 +22,20 @@ public class RegisterLoanEntity {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public UUID getEventId() {
+        return eventId;
     }
 
-    public UUID getUuid() {
-        return uuid;
+    public void setEventId(UUID eventId) {
+        this.eventId = eventId;
     }
 
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public UUID getPersonId() {
+        return personId;
     }
 
-    public String getPersonalId() {
-        return personalId;
-    }
-
-    public void setPersonalId(String personalId) {
-        this.personalId = personalId;
-    }
-
-    public ZonedDateTime getRegisteredTimestamp() {
-        return registeredTimestamp;
+    public void setPersonId(UUID personId) {
+        this.personId = personId;
     }
 
     public double getAmount() {
@@ -52,6 +44,10 @@ public class RegisterLoanEntity {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    public ZonedDateTime getRegisteredTimestamp() {
+        return registeredTimestamp;
     }
 
     public void setRegisteredTimestamp(ZonedDateTime registeredTimestamp) {

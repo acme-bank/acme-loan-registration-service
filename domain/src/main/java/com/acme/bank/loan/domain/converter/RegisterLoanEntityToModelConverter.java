@@ -1,9 +1,8 @@
 package com.acme.bank.loan.domain.converter;
 
-import org.springframework.stereotype.Component;
-
 import com.acme.bank.loan.domain.entity.RegisterLoanEntity;
 import com.acme.bank.loan.domain.model.RegisterLoanModel;
+import org.springframework.stereotype.Component;
 
 @Component
 public class RegisterLoanEntityToModelConverter extends AbstractConverter<RegisterLoanEntity, RegisterLoanModel> {
@@ -11,8 +10,8 @@ public class RegisterLoanEntityToModelConverter extends AbstractConverter<Regist
     @Override
     public RegisterLoanModel convert(RegisterLoanEntity entity) {
         RegisterLoanModel model = new RegisterLoanModel();
-        model.setUuid(entity.getUuid());
-        model.setPersonalId(entity.getPersonalId());
+        model.setEventId(entity.getEventId());
+        model.setPersonId(entity.getPersonId());
         model.setRegisteredTimestamp(entity.getRegisteredTimestamp());
         model.setEntitledTimestamp(entity.getEntitledTimestamp());
         model.setRejectedTimestamp(entity.getRejectedTimestamp());

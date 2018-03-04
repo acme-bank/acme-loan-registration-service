@@ -19,7 +19,7 @@ public class RegisterLoanKafkaProducer {
     }
 
     public void send(RegisterLoanEvent event) {
-        String key = event.getUuid().toString();
+        String key = event.getEventId().toString();
         LOGGER.info("Sending event with key {} on topic {}", key, KafkaTopic.REGISTERED_LOANS.getTopicName());
         kafkaTemplate.send(KafkaTopic.REGISTERED_LOANS.getTopicName(), key, event);
     }

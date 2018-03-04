@@ -1,17 +1,16 @@
 package com.acme.bank.loan.service.repository;
 
-import java.util.List;
-import java.util.UUID;
-
+import com.acme.bank.loan.domain.entity.RegisterLoanEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.acme.bank.loan.domain.entity.RegisterLoanEntity;
+import java.util.List;
+import java.util.UUID;
 
 @Repository
 public interface RegisterLoanRepository extends JpaRepository<RegisterLoanEntity, Long> {
 
-    RegisterLoanEntity findByUuid(UUID uuid);
+    RegisterLoanEntity findByEventId(UUID eventId);
 
-    List<RegisterLoanEntity> findAllByPersonalId(String personalId);
+    List<RegisterLoanEntity> findAllByPersonId(UUID personId);
 }

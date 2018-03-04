@@ -1,9 +1,8 @@
 package com.acme.bank.loan.domain.converter;
 
-import org.springframework.stereotype.Component;
-
 import com.acme.bank.loan.domain.entity.RegisterLoanEntity;
 import com.acme.bank.loan.domain.event.RegisterLoanEvent;
+import org.springframework.stereotype.Component;
 
 @Component
 public class RegisterLoanEntityToEventConverter extends AbstractConverter<RegisterLoanEntity, RegisterLoanEvent> {
@@ -11,8 +10,8 @@ public class RegisterLoanEntityToEventConverter extends AbstractConverter<Regist
     @Override
     public RegisterLoanEvent convert(RegisterLoanEntity entity) {
         RegisterLoanEvent event = new RegisterLoanEvent();
-        event.setUuid(entity.getUuid());
-        event.setPersonalId(entity.getPersonalId());
+        event.setEventId(entity.getEventId());
+        event.setPersonId(entity.getPersonId());
         event.setRegisteredTimestamp(entity.getRegisteredTimestamp());
         event.setAmount(entity.getAmount());
         return event;

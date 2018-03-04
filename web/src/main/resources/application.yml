@@ -1,16 +1,6 @@
 ########################
 # ACME Config          #
 ########################
-acme:
-  kafka:
-    topics:
-      register-loan: registered-loans
-      validate-loan: validated-loans
-      enrich-loan: enriched-loans
-      pending-loan: pending-loans
-      augment-loan: augmented-loans
-      entitle-loan: entitled-loans
-      reject-loan: rejected-loans
 
 ########################
 # SPRING Config        #

@@ -5,16 +5,16 @@ import java.util.UUID;
 
 public class RejectLoanEvent {
 
-    private UUID uuid;
+    private UUID eventId;
     private ZonedDateTime rejectedTimestamp;
     private String details;
 
-    public UUID getUuid() {
-        return uuid;
+    public UUID getEventId() {
+        return eventId;
     }
 
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public void setEventId(UUID eventId) {
+        this.eventId = eventId;
     }
 
     public ZonedDateTime getRejectedTimestamp() {

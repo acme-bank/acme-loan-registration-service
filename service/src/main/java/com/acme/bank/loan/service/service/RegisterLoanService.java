@@ -1,10 +1,10 @@
 package com.acme.bank.loan.service.service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
+import com.acme.bank.loan.domain.entity.RegisterLoanEntity;
+import com.acme.bank.loan.domain.event.EntitleLoanEvent;
+import com.acme.bank.loan.domain.event.RegisterLoanEvent;
+import com.acme.bank.loan.domain.event.RejectLoanEvent;
+import com.acme.bank.loan.domain.model.RegisterLoanModel;
 import com.acme.bank.loan.service.producer.RegisterLoanKafkaProducer;
 import com.acme.bank.loan.service.repository.RegisterLoanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import com.acme.bank.loan.domain.entity.RegisterLoanEntity;
-import com.acme.bank.loan.domain.event.EntitleLoanEvent;
-import com.acme.bank.loan.domain.event.RegisterLoanEvent;
-import com.acme.bank.loan.domain.event.RejectLoanEvent;
-import com.acme.bank.loan.domain.model.RegisterLoanModel;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @SuppressWarnings({"UnusedReturnValue"})
 @Service
@@ -43,19 +42,19 @@ public class RegisterLoanService {
                 .collect(Collectors.toList());
     }
 
-    public List<RegisterLoanModel> find(String personalId) {
-        Assert.notNull(personalId, "Personal ID is null");
+    public List<RegisterLoanModel> find(UUID personId) {
+        Assert.notNull(personId, "Person ID is null");
 
-        List<RegisterLoanEntity> entities = registerLoanRepository.findAllByPersonalId(personalId);
+        List<RegisterLoanEntity> entities = registerLoanRepository.findAllByPersonId(personId);
         return entities.stream()
                 .map(entity -> conversionService.convert(entity, RegisterLoanModel.class))
                 .collect(Collectors.toList());
     }
 
-    public RegisterLoanModel get(UUID uuid) {
-        Assert.notNull(uuid, "UUID is null");
+    public RegisterLoanModel get(UUID eventId) {
+        Assert.notNull(eventId, "Event ID is null");
 
-        RegisterLoanEntity entity = registerLoanRepository.findByUuid(uuid);
+        RegisterLoanEntity entity = registerLoanRepository.findByEventId(eventId);
         return conversionService.convert(entity, RegisterLoanModel.class);
     }
 
@@ -72,34 +71,34 @@ public class RegisterLoanService {
         registerLoanRepository.save(entity);
         registerLoanKafkaProducer.send(event);
 
-        return event.getUuid();
+        return event.getEventId();
     }
 
     @Transactional
     public UUID save(EntitleLoanEvent event) {
         return Optional.ofNullable(event)
-                .map(EntitleLoanEvent::getUuid)
-                .map(registerLoanRepository::findByUuid)
+                .map(EntitleLoanEvent::getEventId)
+                .map(registerLoanRepository::findByEventId)
                 .map(entity -> {
                     entity.setEntitledTimestamp(event.getEntitledTimestamp());
                     return entity;
                 })
                 .map(registerLoanRepository::save)
-                .map(RegisterLoanEntity::getUuid)
+                .map(RegisterLoanEntity::getEventId)
                 .orElse(null);
     }
 
     @Transactional
     public UUID save(RejectLoanEvent event) {
         return Optional.ofNullable(event)
-                .map(RejectLoanEvent::getUuid)
-                .map(registerLoanRepository::findByUuid)
+                .map(RejectLoanEvent::getEventId)
+                .map(registerLoanRepository::findByEventId)
                 .map(entity -> {
                     entity.setRejectedTimestamp(event.getRejectedTimestamp());
                     return entity;
                 })
                 .map(registerLoanRepository::save)
-                .map(RegisterLoanEntity::getUuid)
+                .map(RegisterLoanEntity::getEventId)
                 .orElse(null);
     }
 }
